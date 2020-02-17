@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Eden</title>
+	<link rel="stylesheet" href="css/style.css">
+	<script src="https://kit.fontawesome.com/e4ec04848c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>EDEN<h3>Farmer</h3></h2>
+        <ul>
+            <li><a href="index.html" id="home"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="html/analytics.html" id="a"><i class="fas fa-chart-line"></i>Analytics</a></li>
+            <li><a href="html/growth.html" id="a"><i class="fas fa-seedling"></i>Growth rate</a></li>
+            <li><a href="html/contact.html" id="a"><i class="fas fa-address-book"></i>Contact</a></li>
+        </ul> 
+    </div>
+    <div class="main_content">
+        <div class="header">EDEN</div>
+        <hr>
+        <div class="monitor" onclick="myfunction()">
+            <i class="fas fa-chart-area"></i>
+            <p class="mon">Monitoring</p>
+        </div>
+        <div class="control">
+            <i class="fas fa-cogs"></i>
+            <p class="con">Controlling</p>
+        </div>
+        <div class="node" id="details">
+            <div class="node1">
+                <h3>Node 1</h3><hr>
+                <div class="n1v1">
+                    <h1>Temperature</h1><hr>
+                    <div id="temp"></div>
+                </div>
+                <div class="n1v2">
+                    <h1>Humidity</h1><hr>
+                    <div id="hum"></div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <div class="n1v1">
+                    <h1>Light intensity</h1><hr>
+                    <div id="light"></div>
+                </div>
+                <div class="n1v2">
+                    <h1>NPK</h1><hr>
+                    <div id="npk">High</div>
+                </div>
+                <div class="n1v4">
+                    <h1>Co2 level</h1><hr>
+                    <div id="co2"></div>
+                </div>
+                <div class="n1v5">
+                    <h1>Soil moisture</h1><hr>
+                    <div id="soil"></div>
+                </div>
+            </div>
+            <div class="node2">
+                <h3>Node 2</h3><hr>
+                <div class="n2v1">
+                    <h1>Temperature</h1><hr>
+                    <h4>0</h4>
+                </div>
+                <div class="n2v2">
+                    <h1>Humidity</h1><hr>
+                    <h4>0</h4>
+                </div>
+                <div class="n2v3">
+                    <h1>Light intensity</h1><hr>
+                    <h4>0</h4>
+                </div>
+                <div class="n2v4">
+                    <h1>Co2 level</h1><hr>
+                    <h4>0</h4>
+                </div>
+                <div class="n2v5">
+                    <h1>Soil moisture</h1><hr>
+                    <h4>0</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+   
+<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase.js"></script>
+
+
+<script>
+ 
+  var firebaseConfig = {
+    apiKey: "AIzaSyAH784qAeAYbP3bVd1FHqGuhSVKrI1zlKU",
+    authDomain: "eden-database.firebaseapp.com",
+    databaseURL: "https://eden-database.firebaseio.com",
+    projectId: "eden-database",
+    storageBucket: "eden-database.appspot.com",
+    messagingSenderId: "783228062969",
+    appId: "1:783228062969:web:b451d12b0d5bfbc4a86628",
+    measurementId: "G-YX8JZJ7N7Q"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+    
+                
+      function myfunction() {
+          var x = document.getElementById("details");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+          }
+      }
+
+    
+    </script>
+    <script src="../js/index.js"></script>
+</body>
+</html>

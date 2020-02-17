@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Eden</title>
+	<link rel="stylesheet" href="../css/growth-style.css">
+	<script src="https://kit.fontawesome.com/e4ec04848c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>EDEN<h3>Farmer</h3></h2>
+        <ul>
+            <li><a href="../index.html" id="a"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="analytics.html"id="a"><i class="fas fa-chart-line"></i>Analytics</a></li>
+            <li><a href="growth.html"><i class="fas fa-seedling"></i>Growth rate</a></li>
+            <li><a href="contact.html" id="a"><i class="fas fa-address-book"></i>Contact</a></li>
+        </ul> 
+    </div>
+    <div class="main_content">
+        <div class="header">EDEN</div>
+        <hr>
+        <div class="yieldp" onclick="myfunction()">
+            <i class="fas fa-chart-bar"></i>
+            <p class="yield">Yield prediction</p>
+        </div>
+        <div class="actualg" onclick="myfunction2()">
+            <i class="fas fa-leaf"></i>
+            <p class="actual">Actual growth</p>
+        </div>
+        <div class="yieldprediction" id="detail">
+            <hr>
+            <h1>Yield Prediction Rate</h1>
+            <p>50 Kg</p>
+            <hr>
+            <div class="scheme">
+                <h1>Government Schemes</h1>
+                <table id="customers">
+                      <tr>
+                        <th>Schemes</th>
+                        <th>Assits</th>
+                      
+                      </tr>
+                      <tr>
+                        <td>Pradhan Mantri Fasal Bima Yojana (PMFBY)</td>
+                        <td id="sch">1. Insurance protection for food crops, oilseeds and annual horticultural/ commercial crops notified by state government. <br><br>2. Uniform maximum premium for all farmers : i) Kharif  season -  2% of sum insured. ii) Rabi Season 1.5% of sum insured. iii) Annual commercial/horticultural crops - 5% of sum insured.<br><br>3. The difference between actual premium and the rate of Insurance payable by farmers shall be shared equally by the Centre and State.<br><br>4. Claims of full Sum Insured (SI), without capping or reduction in SI.<br><br> 5. If the sowing is not done due to adverse weather/climate, claims upto 25% of sum insured will be paid for prevented sowing/planting risk.<br><br>6. When the crop yield is less than the guaranteed yield of notified crops, the claim payment equal to shortfall in yield is payable to all insured farmers</td>   
+                      </tr>
+                      <tr>
+                        <td>Weather Based Crop Insurance Scheme (WBCIS)</td>
+                        <td id="sch">1. Insurance protection for notified food crops, oilseeds and annual horticultural/commercial crops<br><br>2. Uniform maximum premium for all farmers like PMFBY : a) Kharif  season -  2% of sum insured. b) Rabi Season 1.5% of sum insured. c) Commercial/horticultural crops 5% of sum insured<br><br>3.The difference between actual premium and the rate of Insurance payable by farmers shall be shared equally by the Centre and State <br><br> 4.When the weather indices (rainfall/ temperature/relative humidity/wind speed etc.) is different (less or higher) from the Guaranteed Weather Index of notified crops, the claim payment equal to deviation/shortfall is payable to all insured farmers of notified area <br><br></td>
+                      </tr>
+                       <tr>
+                        <td>Coconut Palm Insurance Scheme (CPIS)</td>
+                        <td id="sch">1. Insurance protection for Coconut Palm growers.<br><br> 2 Premium rate per palm ranges from Rs. 9.00 (in the plant age group of 4 to 15 years) to Rs. 14.00 (in the plant age  group of 16-60 years).<br><br> 3. 50-75% subsidy of premium is provided to all types of farmers.<br><br> 4. When the palm damaged, the claim payment equal to input cost loss damage is payable to the insured in notified area</td>
+                      </tr>
+                    <tr>
+                        <td>Unified Package Insurance Scheme (UPIS) as pilot in notified districts.</td>
+                        <td id="sch">1.Insurance Scheme (UPIS) as pilot in notified districts.<br><br>2. To provide financial protection & comprehensive risk coverage of crops, assets, life, and student safety to farmers.<br><br>3. Pilot will include seven section Viz., crop Insurance (PMFBY/WBCIS), Loss of Life (PMJJBY), Accidental Death & Disability (PMSBY), Student Safety, Household, Agriculture implements & Tractor. <br><br>4. Crop Insurance will be compulsory. However, farmers can choose at least two section from remaining. <br><br><br>5. Farmers may be able to get all requisite insurance products for farmers through one simple proposal/ application Form and through single window. <br><br>6. Two flagship schemes of the Government viz PMSBY & PMJJBY have been included apart from insurance of assets. y Pilot scheme will be implemented through single window.<br> <br>7. Processing of claims (other than Crop Insurance) on the basis of individual claim report. </td>
+                      </tr>
+                </table>
+                <br><br>
+            </div>
+        </div>
+        <div class="actualgrowth" id="detail2">
+            <hr>
+            <h1>Actual Growth Rate</h1>
+            <p>49.5 Kg</p>
+            <hr>
+            <h1>Middle Man Name</h1>
+            <p>SakthiVel</p>
+            <hr>
+        </div>
+    </div>
+</div>
+    
+<script>
+    var y = document.getElementById("detail2");
+    var x = document.getElementById("detail");
+      function myfunction() {
+          
+          if (x.style.display == "none") {
+            x.style.display = "block";
+            y.style.display="none";
+          } else {
+            x.style.display = "none";
+          }
+      }
+    
+    function myfunction2() {
+          
+          if (y.style.display == "none") {
+              x.style.display = "none";
+            y.style.display = "block";
+          } else {
+            y.style.display = "none";
+          }
+      }
+
+    </script>
+</body>
+</html>

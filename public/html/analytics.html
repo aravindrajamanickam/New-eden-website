@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Eden</title>
+	<link rel="stylesheet" href="../css/analytics-style.css">
+	<script src="https://kit.fontawesome.com/e4ec04848c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-storage.js"></script> 
+
+    
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>EDEN<h3>Farmer</h3></h2>
+        <ul>
+            <li><a href="../index.html" id="a"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="#"><i class="fas fa-chart-line "></i>Analytics</a></li>
+            <li><a href="growth.html" id="a"><i class="fas fa-seedling"></i>Growth rate</a></li>
+            <li><a href="contact.html" id="a"><i class="fas fa-address-book"></i>Contact</a></li>
+        </ul> 
+    </div>
+    <div class="main_content">
+    <div class="header">EDEN</div>
+    </div>
+    <br>
+    <div class="chart">
+        <canvas id="linechart"></canvas>
+    </div>
+    <div class="chart">
+        <canvas id="chartline"></canvas>
+    </div>
+</div>
+
+      <div class="container-fluid">
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto mt-3 ml-5">
+                    <div class="card animated animatedFadeInUp fadeInUp shadow p-3 mb-5 bg-white rounded " id="chart1" >
+                      <script>
+                      FusionCharts.ready(function() {
+                        var stockPriceChart1 = new FusionCharts({
+                            id: "stockRealTimeChart1",
+                            type: 'realtimeline',
+                            renderAt: 'chart1',
+                            width: '900',
+                            height: '500',
+                            //theme:'candy',
+                            dataFormat: 'json',
+                            //animationEnables:true,
+                            dataSource: {
+                              "chart": {
+                                "caption": "Temperature",
+                                "showBorder": "0",
+                                //"borderThickness": "3",
+                                "showcanvasBorderRadius":"40",
+                                //"subCaption": "Harry's SuperMart",
+                                "xAxisName": "Time",
+                                "yAxisName": "Temperature",
+                                "lineColor":"f9812a",
+                                //"numberPrefix": "$",
+                                "refreshinterval": "5",
+                                //"yaxisminvalue": "40",
+                                //"yaxismaxvalue": "200",
+                                "numdisplaysets": "10",
+                                "outCnvBaseFont": "Arial",
+                                "outCnvBaseFontSize": "11",
+                                "outCnvBaseFontColor": "#000000",
+                                "type":"circle",
+                                "labeldisplay": "rotate",
+                                "showRealTimeValue": "0",
+                                "bgColor": "#FFFFFF",
+                                 // "bgratio": "60,40",
+                                 // "bgAlpha": "70,80",
+                                "bgAngle": "180",
+                                "anchorRadius": "5",
+                                "anchorBorderThickness": "2",
+                                "anchorBorderColor": "#127fcb",
+                                "anchorSides": "2",
+                                "anchorBgColor": "#d3f7ff",
+                                "theme": "fusion"
+                              },
+                              "categories": [{
+                                "category": [{
+                                  "label": "Day Start"
+                                }]
+                              }],
+                              "dataset": [{
+                                "data": [{
+                                  "value": "0"
+                                }]
+                              }]
+                            },
+                            "events": {
+                              "initialized": function(e) {
+                                function addLeadingZero(num) {
+                                  return (num <= 9) ? ("0" + num) : num;
+                                }
+                                    function updateData() {
+                                  // Get reference to the chart using its ID
+                                  var chartRef = FusionCharts("stockRealTimeChart1"),
+                                    // We need to create a querystring format incremental update, containing
+                                    // label in hh:mm:ss format
+                                    // and a value (random).
+                                    currDate = new Date(),
+                                    label = addLeadingZero(currDate.getHours()) + ":" +
+                                    addLeadingZero(currDate.getMinutes()) + ":" +
+                                    addLeadingZero(currDate.getSeconds()),
+                                    // Get random number between 35.25 & 35.75 - rounded to 2 decimal places
+                                   //randomValue = Math.floor(Math.random() *
+                                     // 50) / 100 + 35.25
+                                         database=firebase.database();
+                                         firedata=new Array();
+                                         //temp=new Array();
+                                         i=0;  
+                                            var leadsRef =database.ref("eden/temperature/");
+                                            leadsRef.limitToLast(1).on('child_added', function(snapshot) {
+                                            var childData = snapshot.val();
+                                                //console.log(childData);
+                                            firedata.push(childData);
+                                            data=firedata[firedata.length- 1];
+                                            var res = data.slice(0, 5);
+                                            data1=JSON.stringify(res);
+                                            data2=JSON.parse(data1);
+                                            //console.log(data2);
+                                            //console.log(data2.Temperature);
+                                          /* for(i=0;i<firedata.length;i++){
+                                              console.log(firedata[i]); 
+                                                 temp1=JSON.parse(firedata[i]);
+                                                 console.log(temp1.temp)
+                                                 strData = "&label=" + label +
+                                                "&value=" +(temp1.temp); 
+                                           }*/
+                                            
+                                     });
+                                     strData1 = "&label=" + label +
+                                              "&value=" +data2; 
+                                console.log(strData1);
+                                  chartRef.feedData(strData1);
+                                }
+                                var myVar = setInterval(function() {
+                                  updateData();
+                                }, 1000);
+                              }
+                            }
+                          })
+                          .render();
+                      }); 
+                      </script>
+                    </div>
+                </div>   
+            </div>
+          
+          //second value
+          
+          <div class="row justify-content-md-center">
+                <div class="col-md-auto mt-3 ml-5">
+                    <div class="card animated animatedFadeInUp fadeInUp shadow p-3 mb-5 bg-white rounded " id="chart2" >
+                      <script>
+                      FusionCharts.ready(function() {
+                        var stockPriceChart2 = new FusionCharts({
+                            id: "stockRealTimeChart2",
+                            type: 'realtimeline',
+                            renderAt: 'chart2',
+                            width: '900',
+                            height: '500',
+                            //theme:'candy',
+                            dataFormat: 'json',
+                            //animationEnables:true,
+                            dataSource: {
+                              "chart": {
+                                "caption": "Soil Moisture",
+                                "showBorder": "0",
+                                //"borderThickness": "3",
+                                "showcanvasBorderRadius":"40",
+                                //"subCaption": "Harry's SuperMart",
+                                "xAxisName": "Time",
+                                "yAxisName": "Soil Moisture",
+                                "lineColor":"f9812a",
+                                //"numberPrefix": "$",
+                                "refreshinterval": "5",
+                                //"yaxisminvalue": "40",
+                                //"yaxismaxvalue": "200",
+                                "numdisplaysets": "10",
+                                "outCnvBaseFont": "Arial",
+                                "outCnvBaseFontSize": "11",
+                                "outCnvBaseFontColor": "#000000",
+                                "type":"circle",
+                                "labeldisplay": "rotate",
+                                "showRealTimeValue": "0",
+                                "bgColor": "#FFFFFF",
+                                 // "bgratio": "60,40",
+                                 // "bgAlpha": "70,80",
+                                "bgAngle": "180",
+                                "anchorRadius": "5",
+                                "anchorBorderThickness": "2",
+                                "anchorBorderColor": "#127fcb",
+                                "anchorSides": "2",
+                                "anchorBgColor": "#d3f7ff",
+                                "theme": "fusion"
+                              },
+                              "categories": [{
+                                "category": [{
+                                  "label": "Day Start"
+                                }]
+                              }],
+                              "dataset": [{
+                                "data": [{
+                                  "value": "0"
+                                }]
+                              }]
+                            },
+                            "events": {
+                              "initialized": function(e) {
+                                function addLeadingZero(num) {
+                                  return (num <= 9) ? ("0" + num) : num;
+                                }
+                                    function updateData() {
+                                  // Get reference to the chart using its ID
+                                  var chartRef = FusionCharts("stockRealTimeChart2"),
+                                    // We need to create a querystring format incremental update, containing
+                                    // label in hh:mm:ss format
+                                    // and a value (random).
+                                    currDate = new Date(),
+                                    label = addLeadingZero(currDate.getHours()) + ":" +
+                                    addLeadingZero(currDate.getMinutes()) + ":" +
+                                    addLeadingZero(currDate.getSeconds()),
+                                    // Get random number between 35.25 & 35.75 - rounded to 2 decimal places
+                                   //randomValue = Math.floor(Math.random() *
+                                     // 50) / 100 + 35.25
+                                         database=firebase.database();
+                                         firedata=new Array();
+                                         //temp=new Array();
+                                         i=0;  
+                                            var leadsRef =database.ref("eden/soil_moisture/");
+                                            leadsRef.limitToLast(1).on('child_added', function(snapshot) {
+                                            var childData = snapshot.val();
+                                                //console.log(childData);
+                                            firedata.push(childData);
+                                            data=firedata[firedata.length- 1];
+                                            var res = data.slice(0,4);
+                                            data1=JSON.stringify(res);
+                                            data2=JSON.parse(data1);
+                                            //console.log(data2);
+                                            //console.log(data2.Temperature);
+                                          /* for(i=0;i<firedata.length;i++){
+                                              console.log(firedata[i]); 
+                                                 temp1=JSON.parse(firedata[i]);
+                                                 console.log(temp1.temp)
+                                                 strData = "&label=" + label +
+                                                "&value=" +(temp1.temp); 
+                                           }*/
+                                            
+                                     });
+                                     strData2 = "&label=" + label +
+                                              "&value=" +data2; 
+                                  console.log(strData2);
+                                  chartRef.feedData(strData2);
+                                }
+                                var myVar = setInterval(function() {
+                                  updateData();
+                                }, 1000);
+                              }
+                            }
+                          })
+                          .render();
+                      }); 
+                      </script>
+                    </div>
+                </div>   
+            </div>
+//3rd vaule
+          
+          <div class="row justify-content-md-center">
+                <div class="col-md-auto mt-3 ml-5">
+                    <div class="card animated animatedFadeInUp fadeInUp shadow p-3 mb-5 bg-white rounded " id="chart3" >
+                      <script>
+                      FusionCharts.ready(function() {
+                        var stockPriceChart3 = new FusionCharts({
+                            id: "stockRealTimeChart3",
+                            type: 'realtimeline',
+                            renderAt: 'chart3',
+                            width: '900',
+                            height: '500',
+                            //theme:'candy',
+                            dataFormat: 'json',
+                            //animationEnables:true,
+                            dataSource: {
+                              "chart": {
+                                "caption": "Light Intensity",
+                                "showBorder": "0",
+                                //"borderThickness": "3",
+                                "showcanvasBorderRadius":"40",
+                                //"subCaption": "Harry's SuperMart",
+                                "xAxisName": "Time",
+                                "yAxisName": "Light Intensity",
+                                "lineColor":"f9812a",
+                                //"numberPrefix": "$",
+                                "refreshinterval": "5",
+                                //"yaxisminvalue": "40",
+                                //"yaxismaxvalue": "200",
+                                "numdisplaysets": "10",
+                                "outCnvBaseFont": "Arial",
+                                "outCnvBaseFontSize": "11",
+                                "outCnvBaseFontColor": "#000000",
+                                "type":"circle",
+                                "labeldisplay": "rotate",
+                                "showRealTimeValue": "0",
+                                "bgColor": "#FFFFFF",
+                                 // "bgratio": "60,40",
+                                 // "bgAlpha": "70,80",
+                                "bgAngle": "180",
+                                "anchorRadius": "5",
+                                "anchorBorderThickness": "2",
+                                "anchorBorderColor": "#127fcb",
+                                "anchorSides": "2",
+                                "anchorBgColor": "#d3f7ff",
+                                "theme": "fusion"
+                              },
+                              "categories": [{
+                                "category": [{
+                                  "label": "Day Start"
+                                }]
+                              }],
+                              "dataset": [{
+                                "data": [{
+                                  "value": "0"
+                                }]
+                              }]
+                            },
+                            "events": {
+                              "initialized": function(e) {
+                                function addLeadingZero(num) {
+                                  return (num <= 9) ? ("0" + num) : num;
+                                }
+                                    function updateData() {
+                                  // Get reference to the chart using its ID
+                                  var chartRef = FusionCharts("stockRealTimeChart3"),
+                                    // We need to create a querystring format incremental update, containing
+                                    // label in hh:mm:ss format
+                                    // and a value (random).
+                                    currDate = new Date(),
+                                    label = addLeadingZero(currDate.getHours()) + ":" +
+                                    addLeadingZero(currDate.getMinutes()) + ":" +
+                                    addLeadingZero(currDate.getSeconds()),
+                                    // Get random number between 35.25 & 35.75 - rounded to 2 decimal places
+                                   //randomValue = Math.floor(Math.random() *
+                                     // 50) / 100 + 35.25
+                                         database=firebase.database();
+                                         firedata=new Array();
+                                         //temp=new Array();
+                                         i=0;  
+                                            var leadsRef =database.ref("eden/light_intensity/");
+                                            leadsRef.limitToLast(1).on('child_added', function(snapshot) {
+                                            var childData = snapshot.val();
+                                            //console.log(childData);
+                                            firedata.push(childData);
+                                            data=firedata[firedata.length- 1];
+                                            var res = data.slice(0,5);
+                                            data1=JSON.stringify(res);
+                                            data2=JSON.parse(data1);
+                                            //console.log(data2);
+                                            //console.log(data2.Temperature);
+                                          /* for(i=0;i<firedata.length;i++){
+                                              console.log(firedata[i]); 
+                                                 temp1=JSON.parse(firedata[i]);
+                                                 console.log(temp1.temp)
+                                                 strData = "&label=" + label +
+                                                "&value=" +(temp1.temp); 
+                                           }*/
+                                            
+                                     });
+                                     strData3 = "&label=" + label +
+                                              "&value=" +data2; 
+                                  console.log(strData3);
+                                  chartRef.feedData(strData3);
+                                }
+                                var myVar = setInterval(function() {
+                                  updateData();
+                                }, 1000);
+                              }
+                            }
+                          })
+                          .render();
+                      }); 
+                      </script>
+                    </div>
+                </div>   
+            </div>
+          
+          //4th value
+          
+          <div class="row justify-content-md-center">
+                <div class="col-md-auto mt-3 ml-5">
+                    <div class="card animated animatedFadeInUp fadeInUp shadow p-3 mb-5 bg-white rounded " id="chart4" >
+                      <script>
+                      FusionCharts.ready(function() {
+                        var stockPriceChart4 = new FusionCharts({
+                            id: "stockRealTimeChart4",
+                            type: 'realtimeline',
+                            renderAt: 'chart4',
+                            width: '900',
+                            height: '500',
+                            //theme:'candy',
+                            dataFormat: 'json',
+                            //animationEnables:true,
+                            dataSource: {
+                              "chart": {
+                                "caption": "Humidity",
+                                "showBorder": "0",
+                                //"borderThickness": "3",
+                                "showcanvasBorderRadius":"40",
+                                //"subCaption": "Harry's SuperMart",
+                                "xAxisName": "Time",
+                                "yAxisName": "Humidity",
+                                "lineColor":"f9812a",
+                                //"numberPrefix": "$",
+                                "refreshinterval": "5",
+                                //"yaxisminvalue": "40",
+                                //"yaxismaxvalue": "200",
+                                "numdisplaysets": "10",
+                                "outCnvBaseFont": "Arial",
+                                "outCnvBaseFontSize": "11",
+                                "outCnvBaseFontColor": "#000000",
+                                "type":"circle",
+                                "labeldisplay": "rotate",
+                                "showRealTimeValue": "0",
+                                "bgColor": "#FFFFFF",
+                                 // "bgratio": "60,40",
+                                 // "bgAlpha": "70,80",
+                                "bgAngle": "180",
+                                "anchorRadius": "5",
+                                "anchorBorderThickness": "2",
+                                "anchorBorderColor": "#127fcb",
+                                "anchorSides": "2",
+                                "anchorBgColor": "#d3f7ff",
+                                "theme": "fusion"
+                              },
+                              "categories": [{
+                                "category": [{
+                                  "label": "Day Start"
+                                }]
+                              }],
+                              "dataset": [{
+                                "data": [{
+                                  "value": "0"
+                                }]
+                              }]
+                            },
+                            "events": {
+                              "initialized": function(e) {
+                                function addLeadingZero(num) {
+                                  return (num <= 9) ? ("0" + num) : num;
+                                }
+                                    function updateData() {
+                                  // Get reference to the chart using its ID
+                                  var chartRef = FusionCharts("stockRealTimeChart4"),
+                                    // We need to create a querystring format incremental update, containing
+                                    // label in hh:mm:ss format
+                                    // and a value (random).
+                                    currDate = new Date(),
+                                    label = addLeadingZero(currDate.getHours()) + ":" +
+                                    addLeadingZero(currDate.getMinutes()) + ":" +
+                                    addLeadingZero(currDate.getSeconds()),
+                                    // Get random number between 35.25 & 35.75 - rounded to 2 decimal places
+                                   //randomValue = Math.floor(Math.random() *
+                                     // 50) / 100 + 35.25
+                                         database=firebase.database();
+                                         firedata=new Array();
+                                         //temp=new Array();
+                                         i=0;  
+                                            var leadsRef =database.ref("eden/humidity/");
+                                            leadsRef.limitToLast(1).on('child_added', function(snapshot) {
+                                            var childData = snapshot.val();
+                                            //console.log(childData);
+                                            firedata.push(childData);
+                                            data=firedata[firedata.length- 1];
+                                            var res = data.slice(0,5);
+                                            data1=JSON.stringify(res);
+                                            data2=JSON.parse(data1);
+                                            //console.log(data2);
+                                            //console.log(data2.Temperature);
+                                          /* for(i=0;i<firedata.length;i++){
+                                              console.log(firedata[i]); 
+                                                 temp1=JSON.parse(firedata[i]);
+                                                 console.log(temp1.temp)
+                                                 strData = "&label=" + label +
+                                                "&value=" +(temp1.temp); 
+                                           }*/
+                                            
+                                     });
+                                     strData4 = "&label=" + label +
+                                              "&value=" +data2; 
+                                  console.log(strData4);
+                                  chartRef.feedData(strData4);
+                                }
+                                var myVar = setInterval(function() {
+                                  updateData();
+                                }, 1000);
+                              }
+                            }
+                          })
+                          .render();
+                      }); 
+                      </script>
+                    </div>
+                </div>   
+            </div>
+//5th value
+          
+           <div class="row justify-content-md-center">
+                <div class="col-md-auto mt-3 ml-5">
+                    <div class="card animated animatedFadeInUp fadeInUp shadow p-3 mb-5 bg-white rounded " id="chart5" >
+                      <script>
+                      FusionCharts.ready(function() {
+                        var stockPriceChart5 = new FusionCharts({
+                            id: "stockRealTimeChart5",
+                            type: 'realtimeline',
+                            renderAt: 'chart5',
+                            width: '900',
+                            height: '500',
+                            //theme:'candy',
+                            dataFormat: 'json',
+                            //animationEnables:true,
+                            dataSource: {
+                              "chart": {
+                                "caption": "Co2 Level",
+                                "showBorder": "0",
+                                //"borderThickness": "3",
+                                "showcanvasBorderRadius":"40",
+                                //"subCaption": "Harry's SuperMart",
+                                "xAxisName": "Time",
+                                "yAxisName": "Co2 Level",
+                                "lineColor":"f9812a",
+                                //"numberPrefix": "$",
+                                "refreshinterval": "5",
+                                //"yaxisminvalue": "40",
+                                //"yaxismaxvalue": "200",
+                                "numdisplaysets": "10",
+                                "outCnvBaseFont": "Arial",
+                                "outCnvBaseFontSize": "11",
+                                "outCnvBaseFontColor": "#000000",
+                                "type":"circle",
+                                "labeldisplay": "rotate",
+                                "showRealTimeValue": "0",
+                                "bgColor": "#FFFFFF",
+                                 // "bgratio": "60,40",
+                                 // "bgAlpha": "70,80",
+                                "bgAngle": "180",
+                                "anchorRadius": "5",
+                                "anchorBorderThickness": "2",
+                                "anchorBorderColor": "#127fcb",
+                                "anchorSides": "2",
+                                "anchorBgColor": "#d3f7ff",
+                                "theme": "fusion"
+                              },
+                              "categories": [{
+                                "category": [{
+                                  "label": "Day Start"
+                                }]
+                              }],
+                              "dataset": [{
+                                "data": [{
+                                  "value": "0"
+                                }]
+                              }]
+                            },
+                            "events": {
+                              "initialized": function(e) {
+                                function addLeadingZero(num) {
+                                  return (num <= 9) ? ("0" + num) : num;
+                                }
+                                    function updateData() {
+                                  // Get reference to the chart using its ID
+                                  var chartRef = FusionCharts("stockRealTimeChart5"),
+                                    // We need to create a querystring format incremental update, containing
+                                    // label in hh:mm:ss format
+                                    // and a value (random).
+                                    currDate = new Date(),
+                                    label = addLeadingZero(currDate.getHours()) + ":" +
+                                    addLeadingZero(currDate.getMinutes()) + ":" +
+                                    addLeadingZero(currDate.getSeconds()),
+                                    // Get random number between 35.25 & 35.75 - rounded to 2 decimal places
+                                   //randomValue = Math.floor(Math.random() *
+                                     // 50) / 100 + 35.25
+                                         database=firebase.database();
+                                         firedata=new Array();
+                                         //temp=new Array();
+                                         i=0;  
+                                            var leadsRef =database.ref("eden/Co2_concentration/");
+                                            leadsRef.limitToLast(1).on('child_added', function(snapshot) {
+                                            var childData = snapshot.val();
+                                            //console.log(childData);
+                                            firedata.push(childData);
+                                            data=firedata[firedata.length- 1];
+                                            var res = data.slice(0,4);
+                                            data1=JSON.stringify(res);
+                                            data2=JSON.parse(data1);
+                                            //console.log(data2);
+                                            //console.log(data2.Temperature);
+                                          /* for(i=0;i<firedata.length;i++){
+                                              console.log(firedata[i]); 
+                                                 temp1=JSON.parse(firedata[i]);
+                                                 console.log(temp1.temp)
+                                                 strData = "&label=" + label +
+                                                "&value=" +(temp1.temp); 
+                                           }*/
+                                            
+                                     });
+                                     strData5 = "&label=" + label +
+                                              "&value=" +data2; 
+                                  console.log(strData5);
+                                  chartRef.feedData(strData5);
+                                }
+                                var myVar = setInterval(function() {
+                                  updateData();
+                                }, 1000);
+                              }
+                            }
+                          })
+                          .render();
+                      }); 
+                          
+                      </script>
+                    </div>
+                </div>   
+            </div>
+
+//6th value
+          
+                <div class="row justify-content-md-center">
+                <div class="col-md-auto mt-3 ml-5">
+                    <div class="card animated animatedFadeInUp fadeInUp shadow p-3 mb-5 bg-white rounded " id="chart6" >
+                      <script>
+                      FusionCharts.ready(function() {
+                        var stockPriceChart6 = new FusionCharts({
+                            id: "stockRealTimeChart6",
+                            type: 'realtimeline',
+                            renderAt: 'chart6',
+                            width: '900',
+                            height: '500',
+                            //theme:'candy',
+                            dataFormat: 'json',
+                            //animationEnables:true,
+                            dataSource: {
+                              "chart": {
+                                "caption": "NPK Level",
+                                "showBorder": "0",
+                                //"borderThickness": "3",
+                                "showcanvasBorderRadius":"40",
+                                //"subCaption": "Harry's SuperMart",
+                                "xAxisName": "Time",
+                                "yAxisName": "NPK",
+                                "lineColor":"f9812a",
+                                //"numberPrefix": "$",
+                                "refreshinterval": "5",
+                                //"yaxisminvalue": "40",
+                                //"yaxismaxvalue": "200",
+                                "numdisplaysets": "10",
+                                "outCnvBaseFont": "Arial",
+                                "outCnvBaseFontSize": "11",
+                                "outCnvBaseFontColor": "#000000",
+                                "type":"circle",
+                                "labeldisplay": "rotate",
+                                "showRealTimeValue": "0",
+                                "bgColor": "#FFFFFF",
+                                 // "bgratio": "60,40",
+                                 // "bgAlpha": "70,80",
+                                "bgAngle": "180",
+                                "anchorRadius": "5",
+                                "anchorBorderThickness": "2",
+                                "anchorBorderColor": "#127fcb",
+                                "anchorSides": "2",
+                                "anchorBgColor": "#d3f7ff",
+                                "theme": "fusion"
+                              },
+                              "categories": [{
+                                "category": [{
+                                  "label": "Day Start"
+                                }]
+                              }],
+                              "dataset": [{
+                                "data": [{
+                                  "value": "0"
+                                }]
+                              }]
+                            },
+                            "events": {
+                              "initialized": function(e) {
+                                function addLeadingZero(num) {
+                                  return (num <= 9) ? ("0" + num) : num;
+                                }
+                                    function updateData() {
+                                  // Get reference to the chart using its ID
+                                  var chartRef = FusionCharts("stockRealTimeChart6"),
+                                    // We need to create a querystring format incremental update, containing
+                                    // label in hh:mm:ss format
+                                    // and a value (random).
+                                    currDate = new Date(),
+                                    label = addLeadingZero(currDate.getHours()) + ":" +
+                                    addLeadingZero(currDate.getMinutes()) + ":" +
+                                    addLeadingZero(currDate.getSeconds()),
+                                    // Get random number between 35.25 & 35.75 - rounded to 2 decimal places
+                                   //randomValue = Math.floor(Math.random() *
+                                     // 50) / 100 + 35.25
+                                         database=firebase.database();
+                                         firedata=new Array();
+                                         //temp=new Array();
+                                         i=0;  
+                                            var leadsRef =database.ref("eden/nitrogen_concentration/");
+                                            leadsRef.limitToLast(1).on('child_added', function(snapshot) {
+                                            //console.log(snapshot.val());
+                                            var childData = snapshot.val();
+                                                if(childData==true){
+                                                    var data2=1;
+                                                }
+                                                else{
+                                                    var data2=0;
+                                                }
+                                            //console.log(childData);
+                                            //firedata.push(childData);
+                                            //data=firedata[firedata.length- 1];
+                                            //var res = data.slice(0,2);
+                                            //data1=JSON.stringify(res);
+                                            //data2=JSON.parse(data1);
+                                            //console.log(data2);
+                                            //console.log(data2.Temperature);
+                                          /* for(i=0;i<firedata.length;i++){
+                                              console.log(firedata[i]); 
+                                                 temp1=JSON.parse(firedata[i]);
+                                                 console.log(temp1.temp)
+                                                 strData = "&label=" + label +
+                                                "&value=" +(temp1.temp); 
+                                           }*/
+                                            
+                                     });
+                                     strData6 = "&label=" + label +
+                                              "&value=" +parseInt(data2); 
+                                  console.log(strData6);
+                                  chartRef.feedData(strData6);
+                                }
+                                var myVar = setInterval(function() {
+                                  updateData();
+                                }, 1000);
+                              }
+                            }
+                          })
+                          .render();
+                      }); 
+                          
+                      </script>
+                    </div>
+                </div>   
+            </div>
+
+
+    </div>
+    
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+
+
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAH784qAeAYbP3bVd1FHqGuhSVKrI1zlKU",
+    authDomain: "eden-database.firebaseapp.com",
+    databaseURL: "https://eden-database.firebaseio.com",
+    projectId: "eden-database",
+    storageBucket: "eden-database.appspot.com",
+    messagingSenderId: "783228062969",
+    appId: "1:783228062969:web:b451d12b0d5bfbc4a86628",
+    measurementId: "G-YX8JZJ7N7Q"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+    
+<script src="../js/analytics.js"></script>
+    
+
+</body>
+</html>

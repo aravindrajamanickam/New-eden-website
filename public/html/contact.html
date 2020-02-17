@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Eden</title>
+	<link rel="stylesheet" href="../css/contact-style.css">
+	<script src="https://kit.fontawesome.com/e4ec04848c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>EDEN<h3>Farmer</h3></h2>
+        <ul>
+            <li><a href="../index.html" id="a"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="analytics.html" id="a"><i class="fas fa-chart-line"></i>Analytics</a></li>
+            <li><a href="growth.html" id="a"><i class="fas fa-seedling"></i>Growth rate</a></li>
+            <li><a href="#"><i class="fas fa-address-book"></i>Contact</a></li>
+        </ul> 
+    </div>
+    <div class="main_content">
+        <div class="header">EDEN</div>
+        <hr>
+        <h1 class="contact"> You can contact us here !!</h1>
+        <div class="socialmedia">
+            <a class="btn" href="#"><i class="fab fa-instagram"></i></a>
+            <a class="btn" href="#"><i class="fab fa-linkedin"></i></a>
+            <a class="btn" href="#"><i class="fab fa-github"></i></a>
+        </div>
+        <h1 class="or">Or <br> Feel free to write us</h1>
+        <button class="write" onclick="toggle()">Write Me</button>
+        <div class="form" id="contactform">
+            <h1 class="fill">Please fill the form below</h1>
+            <div class="txtb">
+                <label>Name :</label>
+                <input type="email" placeholder="Enter your email address.">
+            </div>
+            <div class="txtb">
+                <label>Email :</label>
+                <input type="email" placeholder="Enter your email address.">
+            </div>
+            <div class="txtb">
+                <label>Message :</label>
+                <textarea name="name" rows="8" cols="30" ></textarea>
+            </div>
+            <button class="send">Send</button>
+        </div>
+
+        <script>
+            function toggle()
+            {
+                var x=document.getElementById("contactform");
+                if(x.style.display==="none")
+                    {
+                        x.style.display="block";
+                    }
+                else
+                    {
+                        x.style.display="none"
+                    }
+            }
+        </script>        
+    </div>
+</div>
+</body>
+</html>
